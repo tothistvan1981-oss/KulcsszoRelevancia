@@ -82,7 +82,7 @@ def TI_osszesitett_stat(eredmenyek):
     return osszes_kulcs.most_common(20), meta_relev
 
 class TIEredmeny:
-    def __init__(self, url, description, keywords, szoveg_kulcs, tilte):
+    def __init__(self, url, description, keywords, szoveg_kulcs, tilte, load_time):
         self.url = url
         self.description = description
         self.keywords = keywords
@@ -92,3 +92,4 @@ class TIEredmeny:
         self.relev_desc = TI_meta_relevancia(self.desc_szavak, szoveg_kulcs)
         self.relev_keys = TI_meta_relevancia(self.key_szavak, szoveg_kulcs)
         self.title = tilte
+        self.load_time = load_time

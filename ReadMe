@@ -69,4 +69,5 @@ A program egy megadott weboldal oldalát és legfeljebb 5 saját belső linkelt 
 - Előfordulhat, hogy bizonyos weboldalakon a <meta name="keywords"> mező nem található meg. Ebben az esetben a program az elemzés eredményében külön is jelzi ezt.
 - A kulcsszavak szűréséhez magyar nyelvű stopword-lista került alkalmazásra, hogy a gyakori, jelentéktelen szavak (például: "és", "vagy", "hogy", stb.) ne zavarják az elemzést.
 - A program célja, hogy áttekinthetően, könnyen bemutatható módon segítse a keresőoptimalizálás (SEO) szempontjából fontos adatok vizsgálatát.
+- Seo oldalbetöltés sebesség mérés
 ---
