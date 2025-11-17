@@ -61,13 +61,3 @@ A program egy megadott weboldal oldalát és legfeljebb 5 saját belső linkelt 
     
 
 3. A felugró ablakban írd be a vizsgálandó domaint (pl. alkossegyedit.hu), majd kattints az „Elemzés indítása” gombra.
-
----
-
-## Megjegyzés
-
-- Ha a meta keywords tag hiányzik egy oldalon, az eredményben ez jelezve van.
-- A kulcsszavakat a program magyar stopword lista alapján szűri.
-- A program egyszerűen bemutatható, átlátható, minden követelménynek megfelel.
-
----
