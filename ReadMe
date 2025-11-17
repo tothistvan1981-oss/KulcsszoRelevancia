@@ -1,0 +1,73 @@
+# TI Kulcsszó relevancia (Első 5 oldalra)
+
+**Készítette:** Tóth István
+
+---
+
+## Feladat rövid leírása
+
+A program egy megadott weboldal oldalát és legfeljebb 5 saját belső linkelt oldalát elemzi:
+- Kigyűjti a meta description és meta keywords tag-ek tartalmát, valamint az oldalak teljes szövegét.
+- Megszámolja, hogy a meta kulcsszavak közül melyek fordulnak elő ténylegesen a szövegben, és ezt (relevanciaként) jeleníti meg.
+- Listázza az 5 leggyakoribb kulcsszót minden oldalon.
+- Azon oldalakon, ahol nincs meta keywords tag, ott a relevancia 0%.
+- Magyar stopword a felesleges szavak szűrése céljából
+
+---
+
+## Használt modulok
+
+- **tkinter** – grafikus felület (ablak, mező, gomb)
+- **requests** – weboldalak letöltése
+- **bs4 (BeautifulSoup)** – HTML feldolgozás
+- **urllib.parse** – linkek, domainek feldolgozása
+- **re** – reguláris kifejezések (mintakeresés)
+- **collections.Counter** – kulcsszavak gyakoriságának számolása
+- **timodule** – saját modul (kulcsszó logika, relevancia, osztályok)
+
+---
+
+## Fontosabb függvények
+
+**Főprogram:**
+- TI_letolt_oldal(url) – Oldal letöltése.
+- TI_elemzes_gomb() – Az elemzés indítása gomb eseménykezelője.
+- TI_osszes_elemzes(base_url, maxoldal=5) – Az összes kiválasztott oldal elemzése.
+- TI_gui_megjelenit(eredmenyek) – Eredmények megjelenítése a grafikus felületen.
+
+
+
+**Saját modul (timodule.py):**
+- TI_szovegbol_kulcsszavak(szoveg) – Kulcsszavak kigyűjtése és számlálása a szövegből.
+- TI_metatag_szavak(meta) – Meta tag szavainak kinyerése.
+- TI_meta_relevancia(meta_szavak, kulcsszavak) – Meta kulcsszavak relevanciájának számolása a tényleges tartalom alapján.
+- TIEredmeny (osztály) – Egy oldal elemzési eredményeinek tárolása.
+- TI_osszesitett_stat(eredmenyek) – Összes oldalon leggyakoribb kulcsszavak meghatározása.
+- TI_belso_linkek(base_url, html) – Belső linkek kigyűjtése az oldalról.
+- TI_kigyujt_meta_es_szoveg(html) – Meta adatok és teljes szöveg kigyűjtése egy oldalból.
+
+---
+
+## Használat
+
+1. Szükséges csomagok telepítése:
+    bash
+    pip install requests beautifulsoup4
+    
+
+2. Program futtatása:
+    bash
+    python main.py
+    
+
+3. A felugró ablakban írd be a vizsgálandó domaint (pl. alkossegyedit.hu), majd kattints az „Elemzés indítása” gombra.
+
+---
+
+## Megjegyzés
+
+- Ha a meta keywords tag hiányzik egy oldalon, az eredményben ez jelezve van.
+- A kulcsszavakat a program magyar stopword lista alapján szűri.
+- A program egyszerűen bemutatható, átlátható, minden követelménynek megfelel.
+
+---
