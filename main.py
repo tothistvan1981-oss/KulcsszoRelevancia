@@ -29,9 +29,9 @@ def TI_osszes_elemzes(base_url, maxoldal=5):
         html = TI_letolt_oldal(url)
         if not html:
             continue
-        desc, keys, szoveg = TI_kigyujt_meta_es_szoveg(html)
+        desc, keys, szoveg, title = TI_kigyujt_meta_es_szoveg(html)
         kulcs = TI_szovegbol_kulcsszavak(szoveg)
-        eredmenyek.append(TIEredmeny(url, desc, keys, kulcs))
+        eredmenyek.append(TIEredmeny(url, desc, keys, kulcs, title))
     return eredmenyek
 
 def TI_gui_megjelenit(eredmenyek):
@@ -46,6 +46,9 @@ def TI_gui_megjelenit(eredmenyek):
         ttk.Label(result_frame, text="Meta kulcsszavak: " + (", ".join(e.key_szavak) if e.key_szavak else "(nincs)")).pack(anchor="w")
         ttk.Label(result_frame, text=f"Meta leírás relevancia: {e.relev_desc}%, kulcsszó relevancia: {e.relev_keys}%").pack(anchor="w")
         ttk.Label(result_frame, text="Top tartalom kulcsszavak: " + ", ".join([k for k, _ in e.szoveg_kulcs.most_common(5)])).pack(anchor="w")
+        tippek = TI_seo_tippek(e.title, e.description)
+        for tipp in tippek:
+            ttk.Label(result_frame, text="SEO tipp: " + tipp, foreground="orange").pack(anchor="w")
 
     top_kulcs, meta_relev = TI_osszesitett_stat(eredmenyek)
     ttk.Label(result_frame, text="\nÖsszesített TOP kulcsszavak: " + ", ".join([k for k, _ in top_kulcs[:10]]), font=("Arial", 10)).pack(anchor="w")

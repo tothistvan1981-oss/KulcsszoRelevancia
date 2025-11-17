@@ -17,15 +17,33 @@ def TI_kigyujt_meta_es_szoveg(html):
     soup = BeautifulSoup(html, "html.parser")
     description = ""
     keywords = ""
+    title = ""
     for tag in soup.find_all("meta"):
         if tag.get("name") == "description":
             description = tag.get("content") or ""
         if tag.get("name") == "keywords":
             keywords = tag.get("content") or ""
+    if soup.title and soup.title.string:
+                title = soup.title.string.strip()
     texts = [t for t in soup.stripped_strings]
     szoveg = " ".join(texts)
-    return description, keywords, szoveg
+    return description, keywords, szoveg, title
 
+def TI_seo_tippek(title, description):
+    tippek = []
+    if not title:
+        tippek.append("Nincs <title> tag!")
+    elif len(title) < 10:
+        tippek.append("A <title> túl rövid (kevesebb mint 10 karakter)!")
+    elif len(title) > 60:
+        tippek.append("A <title> túl hosszú (több mint 60 karakter)!")
+    if not description:
+        tippek.append("Nincs meta description tag!")
+    elif len(description) < 30:
+        tippek.append("A meta description túl rövid!")
+    elif len(description) > 160:
+        tippek.append("A meta description túl hosszú!")
+    return tippek
 
 def TI_belso_linkek(base_url, html):
     soup = BeautifulSoup(html, "html.parser")
@@ -64,7 +82,7 @@ def TI_osszesitett_stat(eredmenyek):
     return osszes_kulcs.most_common(20), meta_relev
 
 class TIEredmeny:
-    def __init__(self, url, description, keywords, szoveg_kulcs):
+    def __init__(self, url, description, keywords, szoveg_kulcs, tilte):
         self.url = url
         self.description = description
         self.keywords = keywords
@@ -73,3 +91,4 @@ class TIEredmeny:
         self.key_szavak = TI_metatag_szavak(keywords)
         self.relev_desc = TI_meta_relevancia(self.desc_szavak, szoveg_kulcs)
         self.relev_keys = TI_meta_relevancia(self.key_szavak, szoveg_kulcs)
+        self.title = tilte

@@ -45,6 +45,7 @@ A program egy megadott weboldal oldalát és legfeljebb 5 saját belső linkelt 
 - TI_osszesitett_stat(eredmenyek) – Összes oldalon leggyakoribb kulcsszavak meghatározása.
 - TI_belso_linkek(base_url, html) – Belső linkek kigyűjtése az oldalról.
 - TI_kigyujt_meta_es_szoveg(html) – Meta adatok és teljes szöveg kigyűjtése egy oldalból.
+- TI_seo_tippek(title, description) - Seo tippek amennyiben szükséges
 
 ---
 
