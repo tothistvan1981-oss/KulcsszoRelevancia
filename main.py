@@ -81,7 +81,7 @@ def TI_betolt_mentett():
 
         kulcsszavak = db.TI_leker_kulcsszavak(elemzes_id)
         if kulcsszavak:
-            kw_str = ", ".join([f"{szo}({db})" for szo, db in kulcsszavak])
+            kw_str = ", ".join([f"{szo}({db})" for szo, dbszam in kulcsszavak])
             uzenet += f"Kulcsszavak: {kw_str}\n"
 
         uzenet += f"Relevancia: DESC {relev_desc}%, KEY {relev_keys}%\n"
