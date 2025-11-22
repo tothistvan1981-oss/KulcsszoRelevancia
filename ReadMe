@@ -1,53 +1,109 @@
-# TI Kulcsszó relevancia (Első 5 oldalra)
+# TI Kulcsszó relevancia 
 
 **Készítette:** Tóth István
+
 
 ---
 
 ## Feladat rövid leírása
 
-A program egy megadott weboldal oldalát és legfeljebb 5 saját belső linkelt oldalát elemzi:
+A program egy megadott weboldal oldalát saját belső linkelt oldalát elemzi:
 - Kigyűjti a meta description és meta keywords tag-ek tartalmát, valamint az oldalak teljes szövegét.
 - Megszámolja, hogy a meta kulcsszavak közül melyek fordulnak elő ténylegesen a szövegben, és ezt (relevanciaként) jeleníti meg.
 - Listázza az 5 leggyakoribb kulcsszót minden oldalon.
 - Azon oldalakon, ahol nincs meta keywords tag, ott a relevancia 0%.
 - Magyar stopword a felesleges szavak szűrése céljából
+- Az elemzéseket SQLite adatbázisba menti
+- A mentett elemzések egy kattintással visszatölthetők.
 
 ---
 
 ## Használt modulok
 
-- **tkinter** – grafikus felület (ablak, mező, gomb)
+- **tkinter** – grafikus felület
 - **requests** – weboldalak letöltése
-- **bs4 (BeautifulSoup)** – HTML feldolgozás
-- **urllib.parse** – linkek, domainek feldolgozása
-- **re** – reguláris kifejezések (mintakeresés)
-- **collections.Counter** – kulcsszavak gyakoriságának számolása
-- **timodule** – saját modul (kulcsszó logika, relevancia, osztályok)
+- **beautifulsoup4** – HTML feldolgozása
+- **urllib.parse** – URL és belső linkek kezelése
+- **re** – szövegminták és kulcsszó keresés
+- **collections.Counter** – kulcsszó statisztika
+- **sqlite3** – adatbázis
+- **timodule.py** – SEO logika és elemző osztály
+- **tidatabase.py** – adatbázis kezelő modul
 
 ---
 
-## Fontosabb függvények
+## Fontosabb modulok és függvények
 
-**Főprogram:**
-- TI_letolt_oldal(url) – Oldal letöltése.
-- TI_elemzes_gomb() – Az elemzés indítása gomb eseménykezelője.
-- TI_osszes_elemzes(base_url, maxoldal=5) – Az összes kiválasztott oldal elemzése.
-- TI_gui_megjelenit(eredmenyek) – Eredmények megjelenítése a grafikus felületen.
+### **1. timodule.py – SEO logika**
 
+#### Osztály: **TIAnalyzer**
+A weboldalak feldolgozásáért felel.
 
+- **TI_letolt_oldal(url)**  
+  Weboldal letöltése, betöltési idő mérése.
 
-**Saját modul (timodule.py):**
-- TI_szovegbol_kulcsszavak(szoveg) – Kulcsszavak kigyűjtése és számlálása a szövegből.
-- TI_metatag_szavak(meta) – Meta tag szavainak kinyerése.
-- TI_meta_relevancia(meta_szavak, kulcsszavak) – Meta kulcsszavak relevanciájának számolása a tényleges tartalom alapján.
-- TIEredmeny (osztály) – Egy oldal elemzési eredményeinek tárolása.
-- TI_osszesitett_stat(eredmenyek) – Összes oldalon leggyakoribb kulcsszavak meghatározása.
-- TI_belso_linkek(base_url, html) – Belső linkek kigyűjtése az oldalról.
-- TI_kigyujt_meta_es_szoveg(html) – Meta adatok és teljes szöveg kigyűjtése egy oldalból.
-- TI_seo_tippek(title, description) - Seo tippek amennyiben szükséges
+- **TI_kigyujt_meta_es_szoveg(html)**  
+  Meta description, meta keywords, title és teljes szöveg kigyűjtése.
+
+- **TI_belso_linkek(base_url, html)**  
+  Az adott domainhez tartozó belső linkek kigyűjtése.
+
+- **TI_szovegbol_kulcsszavak(szoveg)**  
+  Kulcsszavak meghatározása a tartalomból, magyar stopwords szűréssel.
+
+- **TI_metatag_szavak(meta)**  
+  Meta mező szavainak kinyerése.
+
+- **TI_meta_relevancia(meta_szavak, kulcsszavak)**  
+  Meta kulcsszavak és tényleges tartalom egyezésének százaléka.
+
+- **TI_seo_tippek(title, description)**  
+  Figyelmeztetés túl rövid/ hosszú meta adatokra.
+
+- **TI_osszes_elemzes(base_url, maxoldal=5)**  
+  Fő függvény: első oldal + max 4 belső oldal elemzése.
+
+- **TI_osszesitett_stat(eredmenyek)**  
+  Az összes oldalon előforduló leggyakoribb kulcsszavak listája.
+
+#### Osztály: **TIEredmeny**
+Egy oldal elemzésének eredménye:  
+URL, meta adatok, title, kulcsszólista, relevancia érték, betöltési idő.
 
 ---
+
+### **2. tidatabase.py – Adatbázis kezelés**
+
+#### Osztály: **TI_Adatbazis**
+
+- **TI_dbconnect()**  
+  SQLite adatbázis kapcsolódás.
+  
+- **TI_init_db()**  
+  Az SQLite adatbázis és táblák automatikus létrehozása.
+
+- **TI_mentes_eredmeny(eredmeny)**  
+  Egy elemzés és a hozzá tartozó kulcsszavak mentése.
+
+- **TI_leker_utolso(limit=10)**  
+  Legutóbbi elemzések lekérdezése.
+
+- **TI_leker_kulcsszavak(elemzes_id)**  
+  Egy elemzéshez tartozó kulcsszavak betöltése.
+
+---
+
+### **3. main.py – Grafikus felület (GUI)**
+
+- **TI_elemzes_gomb()**  
+  Élő weboldal elemzés indítása + eredmények mentése az adatbázisba.
+
+- **TI_gui_megjelenit(eredmenyek)**  
+  Eredmények megjelenítése scrollozható területen, grid elrendezésben.
+
+- **TI_betolt_mentett()**  
+  Az adatbázisba mentett elemzések megjelenítése.
+  
 
 ## Használat
 
@@ -61,13 +117,16 @@ A program egy megadott weboldal oldalát és legfeljebb 5 saját belső linkelt 
     python main.py
     
 
-3. A felugró ablakban írd be a vizsgálandó domaint (pl. alkossegyedit.hu), majd kattints az „Elemzés indítása” gombra.
+3. A felugró ablakban írd be a vizsgálandó domaint (pl. hvg.hu), majd kattints az "Elemzés indítása" gombra.
 
+
+4. előzmények visszatöltése a "Mentett elemzés betöltése" -gombbal történik.
+
+ 
 ---
 
 ## Megjegyzés
 - Előfordulhat, hogy bizonyos weboldalakon a <meta name="keywords"> mező nem található meg. Ebben az esetben a program az elemzés eredményében külön is jelzi ezt.
 - A kulcsszavak szűréséhez magyar nyelvű stopword-lista került alkalmazásra, hogy a gyakori, jelentéktelen szavak (például: "és", "vagy", "hogy", stb.) ne zavarják az elemzést.
 - A program célja, hogy áttekinthetően, könnyen bemutatható módon segítse a keresőoptimalizálás (SEO) szempontjából fontos adatok vizsgálatát.
-- Seo oldalbetöltés sebesség mérés
 ---
